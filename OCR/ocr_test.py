@@ -34,7 +34,7 @@ def baiduOCR(picfile):
     i = open(picfile, 'rb')
     img = i.read()
     print("正在识别图片:\t" + filename)
-    message = client.general(img)  # 通用文字识别，每天 50 000 次免费
+    message = client.basicGeneral(img)  # 通用文字识别，每天 50 000 次免费
     # message = client.basicAccurate(img)   # 通用文字高精度识别，每天 800 次免费
     print("识别成功!")
     i.close();
@@ -43,13 +43,21 @@ def baiduOCR(picfile):
         fo.writelines("+" * 60 + '\n')
         fo.writelines("识别图片:\t" + filename + "\n" * 2)
         fo.writelines("文本内容:\n")
-        # 输出文本内容
+        # 判断是否为页码，判断逻辑为是否位于书的最前或最后
+        num = message.get('words_result_num')
+        i = 0
         for text in message.get('words_result'):
-            fo.writelines(text.get('words') + '\n')
-            fo.writelines(text.get('location'))
+            i = i + 1
+            str = text.get('words')
+            if (i==1 or i==num) and (str.isdigit()):
+                page = int(str)
+                continue
+            fo.writelines(str + '\n')
+            #fo.writelines(text.get('location'))
         fo.writelines('\n'*2)
     print("文本导出成功!")
-    print()
+    print("当前页码:")
+    print(page)
 
 
 if __name__ == "__main__":

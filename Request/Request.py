@@ -12,6 +12,7 @@ timer = time.perf_counter
 desired_capabilities = DesiredCapabilities.CHROME
 desired_capabilities["pageLoadStrategy"] = "none"
 driver = webdriver.Chrome(executable_path='chromedriver.exe')
+
 # chrome_options = Options()
 # chrome_options.page_load_strategy = 'none'
 # driver = webdriver.Chrome(options=chrome_options)
@@ -46,8 +47,8 @@ def post(path):
 
 begin = timer()
 picfile = r"C:\Users\Dell\Pictures\classroom.jpg"
-outdir = r"D:\Intelligent blind assistance system\Request\tmp"
+outdir = r"D:\IBAS project\Request\tmp"
 
 convertimg(picfile,outdir)
-post(r"D:\Intelligent blind assistance system\Request\tmp\classroom.jpg")
+post(r"D:\IBAS project\Request\tmp\classroom.jpg")
 print(timer()-begin)
