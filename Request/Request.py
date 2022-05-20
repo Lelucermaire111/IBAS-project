@@ -45,10 +45,3 @@ def post(path):
     print(element)
     driver.quit()
 
-begin = timer()
-picfile = r"C:\Users\Dell\Pictures\classroom.jpg"
-outdir = r"D:\IBAS project\Request\tmp"
-
-convertimg(picfile,outdir)
-post(r"D:\IBAS project\Request\tmp\classroom.jpg")
-print(timer()-begin)

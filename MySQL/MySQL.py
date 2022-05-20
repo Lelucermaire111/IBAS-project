@@ -1,35 +1,43 @@
 import pymysql as mysql
-from Barcode import scancode
-mydb = mysql.connect(host = "sh-cynosdbmysql-grp-kxswlvau.sql.tencentcdb.com",
-                     port = 20483,
-                     user = "root",
-                     passwd = "2022abcd!",
-                     database = "IBAS")
+import re
+import string
 
-mycursor = mydb.cursor()
+#利用正则表达式去除返回内容的标点符号
+remove_chars = '[·’!"\#$%&\'()＃！（）*+,-./:;<=>?\@，：?￥★、…．＞【】［］《》？“”‘’\[\\]^_`{|}~+]'
 
-mycursor.execute("SHOW TABLES")
-for x in mycursor:
-    print(x)
+# mydb = mysql.connect(host = "sh-cynosdbmysql-grp-kxswlvau.sql.tencentcdb.com",
+#                      port = 20483,
+#                      user = "root",
+#                      passwd = "2022abcd!",
+#                      database = "IBAS")
+
+#mycursor.execute("SHOW TABLES")
+#for x in mycursor:
+#   print(x)
 
 
-def register(user_id, user_passwd):
+def register(user_id, user_passwd, mycursor):
     mycursor.execute(("SELECT user_pwd FROM user_tbl WHERE user_id = %d" %user_id))
     pwd = -1
     for x in mycursor:
-        pwd = x
+        pwd = x[0]
+    print(pwd)
     if(pwd == -1):
         print("不存在此用户id")
-        return
+        str = "不存在此用户id"
+        return -1,str
     if(pwd == user_passwd):
-        print("登陆成功")
+        print("登录成功")
+        str = "登录成功"
+        return 1,str
     else:
         print("密码错误")
+        str = "密码错误"
+        return 0,str
 
 # register(1,'123456')
 
-def searchISBN():
-    ISBN = scancode.ISBNScan()
+def searchISBN(ISBN, mycursor):
     mycursor.execute("SELECT name,author,memo FROM booklibrary WHERE isbn=%s LIMIT 1 OFFSET 0" %ISBN)
     i = 0
     for x in mycursor:
@@ -41,7 +49,8 @@ def searchISBN():
     if i == 0:
         return -1
     else:
-        return name,author,memo
+        name1 = re.sub(remove_chars," ",name)
+        author1 = re.sub(remove_chars," ",author)
+        return name1,author1
 
-name,author,memo = searchISBN()
-print(name,author,memo)
+
