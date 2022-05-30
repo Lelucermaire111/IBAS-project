@@ -1,3 +1,5 @@
+# 文字识别部分
+
 import glob
 from os import TMP_MAX, path
 import os
@@ -19,7 +21,7 @@ def convertimg(picfile, outdir):
     new_img.save(path.join(outdir, os.path.basename(picfile)))
 
 
-def baiduOCR(picfile):
+def baiduOCR(picfile,outfile):
     """利用百度api识别文本,并保存提取的文字
     picfile:    图片文件名
     outfile:    输出文件
@@ -39,6 +41,7 @@ def baiduOCR(picfile):
     print("识别成功!")
     i.close();
     print(message)
+    page = 0
     with open(outfile, 'a+') as fo:
         fo.writelines("+" * 60 + '\n')
         fo.writelines("识别图片:\t" + filename + "\n" * 2)
@@ -60,8 +63,7 @@ def baiduOCR(picfile):
     print(page)
 
 
-if __name__ == "__main__":
-
+def mainOCR(picfile):
     outfile = 'export.txt'
     outdir = 'tmp'
     if path.exists(outfile):
@@ -69,13 +71,11 @@ if __name__ == "__main__":
     if not path.exists(outdir):
         os.mkdir(outdir)
     print("压缩过大的图片...")
-    """ 首先对过大的图片进行压缩,以提高识别速度,将压缩的图片保存与临时文件夹中
-    """
-    for picfile in glob.glob("picture/*"):
-        convertimg(picfile, outdir)
+    """ 首先对过大的图片进行压缩,以提高识别速度,将压缩的图片保存与临时文件夹中"""
+    convertimg(picfile, outdir)
     print("图片识别...")
-    for picfile in glob.glob("tmp/*"):
-        baiduOCR(picfile)
-        os.remove(picfile)
+    for pic in glob.glob("tmp/*"):
+        baiduOCR(pic,outfile)
+        os.remove(pic)
     print('图片文本提取结束!文本输出结果位于 %s 文件中。' % outfile)
     os.removedirs(outdir)

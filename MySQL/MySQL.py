@@ -45,12 +45,20 @@ def searchISBN(ISBN, mycursor):
         name = x[0]
         author = x[1]
         memo = x[2]
-
     if i == 0:
-        return -1
+        return -1,-1
     else:
         name1 = re.sub(remove_chars," ",name)
         author1 = re.sub(remove_chars," ",author)
         return name1,author1
 
+def uploadbook(user_id, book_name, mycursor):
+    mycursor.execute(("SELECT read_time FROM book_tbl WHERE user_id = '{}' AND book_name = '{}'" .format(user_id,book_name)))
+    read_time = -1
+    for x in mycursor:
+        read_time = x[0]
+    print(read_time)
+    if(read_time == -1):
+        mycursor.execute("INSERT INTO book_tbl(user_id,book_name,read_time) values('{}','{}','{}')" .format(user_id,book_name,0))
+    return read_time
 

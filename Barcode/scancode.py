@@ -20,6 +20,7 @@ def ISBNScan(image_path):
         results = dbr.decode_file(image_path)
 
         # 4.Output the barcode text.
+        barcode = -1
         if results != None:
             for res in results:
                 print("Barcode "  + ":" + res.barcode_text)
@@ -27,3 +28,4 @@ def ISBNScan(image_path):
             return barcode
         else:
             print("No data detected.")
+            return barcode

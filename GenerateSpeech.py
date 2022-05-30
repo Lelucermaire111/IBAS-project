@@ -1,0 +1,10 @@
+import pyttsx3
+tts = pyttsx3.init()
+tts.save_to_file("您好，欢迎使用智能盲人辅助系统", "./begin.wav")
+tts.save_to_file("目前系统数据库中暂无该书目","./db_nobook.wav")
+tts.save_to_file("当前不存在此用户","./no_user.wav")
+tts.save_to_file("密码错误，请重新尝试","./passwd_error.wav")
+tts.save_to_file("登录成功","./success_register.wav")
+tts.save_to_file("请将书背面的条码朝向镜头","./hint_bookcode.wav")
+tts.save_to_file("请选择使用模式","./read_mode.wav")
+tts.runAndWait()

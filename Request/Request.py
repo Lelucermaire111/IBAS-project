@@ -31,7 +31,6 @@ def convertimg(picfile, outdir):
     new_img.save(path.join(outdir, os.path.basename(picfile)))
 
 def post(path):
-
     begin = timer()
     #driver.set_page_load_timeout(10)
     driver.get("http://srijan-ds-intelligent-image-captioning.s3-website.us-east-2.amazonaws.com/")
@@ -41,7 +40,9 @@ def post(path):
     WebDriverWait(driver, 20, 0.5).until(EC.presence_of_element_located((By.CSS_SELECTOR,".btn.btn-caption.btn-margin")))
     driver.find_element_by_css_selector(".btn.btn-caption.btn-margin").click()
     element = driver.find_element_by_class_name( 'caption-text').text
+    
     element = element[8:-6]
     print(element)
     driver.quit()
+    return element
 
