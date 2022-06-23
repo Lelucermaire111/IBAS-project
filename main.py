@@ -11,7 +11,9 @@ import VoiceRecord
 from pydub import AudioSegment
 from pydub.playback import play
 from OCR import ocr_test
+import time
 
+timer = time.perf_counter
 # 定义播放wav文件函数
 def soundplay(path):
     sound = AudioSegment.from_wav(path)
@@ -93,8 +95,9 @@ while(True):
             else:
                 audioapi.audioplay_nobook("您当前阅读的书目为："+name+"。作者为："+author)
                 soundplay("sound/result.wav")
-                MySQL.uploadbook(user_id,name,mycursor)
+                readtime = MySQL.uploadbook(user_id,name,mycursor)
                 mydb.commit()
+                begin = timer()
                 while (True):
                     VoiceRecord.my_record()
                     result = asr_test.asr()
@@ -114,6 +117,7 @@ while(True):
                         audioapi.audioplay()
                         continue
                     elif(result == '退出。'):
+                        delta_time = timer() - begin
                         break
                     else:
                         continue

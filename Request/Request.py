@@ -9,9 +9,7 @@ import os
 from PIL import Image
 #from selenium.webdriver.chrome.options import Options
 timer = time.perf_counter
-desired_capabilities = DesiredCapabilities.CHROME
-desired_capabilities["pageLoadStrategy"] = "none"
-driver = webdriver.Chrome(executable_path='chromedriver.exe')
+
 
 # chrome_options = Options()
 # chrome_options.page_load_strategy = 'none'
@@ -31,6 +29,9 @@ def convertimg(picfile, outdir):
     new_img.save(path.join(outdir, os.path.basename(picfile)))
 
 def post(path):
+    desired_capabilities = DesiredCapabilities.CHROME
+    desired_capabilities["pageLoadStrategy"] = "none"
+    driver = webdriver.Chrome(executable_path='chromedriver.exe')
     begin = timer()
     #driver.set_page_load_timeout(10)
     driver.get("http://srijan-ds-intelligent-image-captioning.s3-website.us-east-2.amazonaws.com/")
